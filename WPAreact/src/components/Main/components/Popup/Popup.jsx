@@ -43,7 +43,7 @@ export default function Popup(props) {
           type="button"
           onClick={onClose}
         >
-          ×
+          <img src={closeIcon} alt="Cerrar" />
         </button>
         
         {title && <h3 className="popup__title">{title}</h3>}
