@@ -4,6 +4,8 @@ import Popup from './components/Popup/Popup'
 import NewCard from './components/form/NewCard/NewCard'
 import EditProfile from './components/form/EditProfile/EditProfile'
 import EditAvatar from './components/form/EditAvatar/EditAvatar'
+import Card from './components/Card/Card'
+import ImagePopup from './components/ImagePopup/ImagePopup'
 
 // Mock data for cards as specified in the instructions
 const cards = [
@@ -42,10 +44,22 @@ function Main() {
     setPopup(null);
   }
 
+  function handleCardClick(card) {
+    const imagePopup = { 
+      title: null, // no title for image popup
+      children: <ImagePopup card={card} />
+    };
+    handleOpenPopup(imagePopup);
+  }
+
   return (
     <main className="content">
       <section className="profile page__section">
-        <div className="profile__image" style={{backgroundImage: `url(${avatar})`}}></div>
+        <div 
+          className="profile__image" 
+          style={{backgroundImage: `url(${avatar})`, cursor: 'pointer'}}
+          onClick={() => handleOpenPopup(editAvatarPopup)}
+        ></div>
         <div className="profile__info">
           <h1 className="profile__title">Jacques Cousteau</h1>
           <button
@@ -66,7 +80,9 @@ function Main() {
 
       <section className="places page__section">
         <ul className="cards__list">
-          {/* Cards will be rendered here */}
+          {cards.map((card) => (
+            <Card key={card._id} card={card} onCardClick={handleCardClick} />
+          ))}
         </ul>
       </section>
 
