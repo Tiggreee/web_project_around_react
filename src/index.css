@@ -546,10 +546,16 @@ body::before {
   padding: 0;
 }
 
+.popup__close:hover {
+  opacity: 0.6;
+  transform: scale(1.1);
+}
+
 .popup__close img {
   width: 32px;
   height: 32px;
   display: block;
+  transition: all 0.2s ease;
 }
 
 .popup__title {
@@ -664,10 +670,16 @@ body::before {
   padding: 0;
 }
 
+.popup_type_image .popup__close:hover {
+  opacity: 0.6;
+  transform: scale(1.1);
+}
+
 .popup_type_image .popup__close img {
   width: 32px;
   height: 32px;
   filter: none;
+  transition: all 0.2s ease;
 }
 
 .popup__image {
