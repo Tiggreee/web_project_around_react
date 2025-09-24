@@ -1,8 +1,14 @@
+import { useState } from 'react';
 import trashIcon from '../../../../images/trashbin.png';
 
 export default function Card(props) {
-  const { name, link, isLiked } = props.card;
+  const { name, link, isLiked: initialIsLiked } = props.card;
   const { onCardClick } = props;
+  const [isLiked, setIsLiked] = useState(initialIsLiked);
+  
+  const handleLikeClick = () => {
+    setIsLiked(!isLiked);
+  };
   
   return (
     <li className="grid__item">
@@ -21,6 +27,7 @@ export default function Card(props) {
           className={`grid__like ${isLiked ? 'grid__like_active' : ''}`}
           type="button"
           aria-label="Me gusta"
+          onClick={handleLikeClick}
         >
           <div className="grid__like-heart"></div>
         </button>
