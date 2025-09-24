@@ -64,8 +64,8 @@ body::before {
 }
 
 .header__logo {
-  width: 500px;
-  height: 100px;
+  width: 800px;
+  height: 160px;
   margin: 0 auto 40px auto;
   display: block;
   object-fit: contain;
@@ -218,8 +218,8 @@ body::before {
   }
   
   .header__logo {
-    width: 600px;
-    height: 120px;
+    width: 1000px;
+    height: 200px;
     max-width: 90%;
     margin: 0 auto 16px auto;
     display: block;
@@ -415,7 +415,7 @@ body::before {
   width: 18px;
   height: 19px;
   display: block;
-  filter: invert(1);
+  filter: brightness(0) invert(1);
 }
 
 .grid__delete:hover {
@@ -703,8 +703,8 @@ body::before {
   }
   
   .header__logo {
-    width: 450px;
-    height: 90px;
+    width: 700px;
+    height: 140px;
     max-width: 90%;
     margin: 0 auto 16px auto;
     display: block;
@@ -818,8 +818,8 @@ body::before {
 }
 
 .header__logo {
-  width: 173px;
-  height: 33px;
+  width: 400px;
+  height: 76px;
 }
 
 @media screen and (max-width: 1279px) {
@@ -830,8 +830,8 @@ body::before {
 
 @media screen and (max-width: 767px) {
   .header__logo {
-    width: 126px;
-    height: 24px;
+    width: 250px;
+    height: 48px;
   }
 }
 
