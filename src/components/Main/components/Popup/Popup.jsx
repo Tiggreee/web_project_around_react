@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import closeIcon from '../../../../images/close_button.png';
+import closeIcon from '/src/images/close_button.png';
 
 export default function Popup({ onClose, title, children }) {
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import trashIcon from '../../../../images/trashbin.png';
+import trashIcon from '/src/images/trashbin.png';
 
 export default function Card({ card, onCardClick, onDelete }) {
   const { name, link, isLiked: initialIsLiked } = card;

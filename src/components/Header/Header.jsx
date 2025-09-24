@@ -1,7 +1,7 @@
-import logo from '../../images/headerlogo.png';
-import editButton from '../../images/edit_button.png';
-import addButton from '../../images/add_button.png';
-import avatar from '../../images/renata.jpeg';
+import logo from '/src/images/headerlogo.png';
+import editButton from '/src/images/edit_button.png';
+import addButton from '/src/images/add_button.png';
+import avatar from '/src/images/renata.jpeg';
 
 export default function Header({ onEditProfile, onAddPlace, onEditAvatar }) {
   return (
