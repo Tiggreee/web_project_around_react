@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import avatar from '../../images/avatar.jpg'
+import Popup from './components/Popup/Popup'
+import NewCard from './components/form/NewCard/NewCard'
+import EditProfile from './components/form/EditProfile/EditProfile'
+import EditAvatar from './components/form/EditAvatar/EditAvatar'
 
 // Mock data for cards as specified in the instructions
 const cards = [
@@ -26,6 +30,10 @@ console.log(cards);
 function Main() {
   const [popup, setPopup] = useState(null);
 
+  const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
+  const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
+  const editAvatarPopup = { title: "Cambiar foto de perfil", children: <EditAvatar /> };
+
   function handleOpenPopup(popup) {
     setPopup(popup);
   }
@@ -44,6 +52,7 @@ function Main() {
             aria-label="Edit profile"
             className="profile__edit-button"
             type="button"
+            onClick={() => handleOpenPopup(editProfilePopup)}
           ></button>
           <p className="profile__description">Explorer</p>
         </div>
@@ -51,6 +60,7 @@ function Main() {
           aria-label="Add card"
           className="profile__add-button"
           type="button"
+          onClick={() => handleOpenPopup(newCardPopup)}
         ></button>
       </section>
 
@@ -59,6 +69,12 @@ function Main() {
           {/* Cards will be rendered here */}
         </ul>
       </section>
+
+      {popup && (
+        <Popup onClose={handleClosePopup} title={popup.title}>
+          {popup.children}
+        </Popup>
+      )}
     </main>
   )
 }
