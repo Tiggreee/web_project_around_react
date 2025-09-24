@@ -23,13 +23,19 @@ export default function Popup(props) {
     }
   };
 
+  const handleContentClick = (event) => {
+    // For image popups, close when clicking outside the image
+    if (!title && event.target.classList.contains('popup__content')) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="popup popup_opened" onClick={handleOverlayClick}>
+    <div className={`popup popup_opened ${!title ? 'popup_type_image' : ''}`} onClick={handleOverlayClick}>
       <div className="popup__overlay"></div>
       <div
-        className={`popup__content ${
-          !title ? "popup_type_image" : ""
-        }`}
+        className="popup__content"
+        onClick={handleContentClick}
       >
         <button
           aria-label="Close modal"
