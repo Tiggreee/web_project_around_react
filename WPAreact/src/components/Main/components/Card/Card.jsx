@@ -1,3 +1,5 @@
+import trashIcon from '../../../../images/trashbin.png';
+
 export default function Card(props) {
   const { name, link, isLiked } = props.card;
   const { onCardClick } = props;
@@ -5,7 +7,7 @@ export default function Card(props) {
   return (
     <li className="grid__item">
       <button type="button" className="grid__delete" aria-label="Eliminar">
-        <div className="grid__delete-icon"></div>
+        <img src={trashIcon} alt="Eliminar" className="grid__delete-icon" />
       </button>
       <img 
         className="grid__pic" 

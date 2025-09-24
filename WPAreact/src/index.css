@@ -388,6 +388,7 @@ body {
   width: 18px;
   height: 19px;
   display: block;
+  filter: invert(1);
 }
 
 .grid__delete:hover {

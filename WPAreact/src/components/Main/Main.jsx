@@ -1,9 +1,3 @@
-import { useState } from 'react'
-import avatar from '../../images/renata.jpeg'
-import Popup from './components/Popup/Popup'
-import NewCard from './components/form/NewCard/NewCard'
-import EditProfile from './components/form/EditProfile/EditProfile'
-import EditAvatar from './components/form/EditAvatar/EditAvatar'
 import Card from './components/Card/Card'
 import ImagePopup from './components/ImagePopup/ImagePopup'
 
@@ -59,44 +53,20 @@ const cards = [
   }
 ];
 
-console.log(cards);
-
-function Main() {
-  const [popup, setPopup] = useState(null);
-
-  const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
-  const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
-  const editAvatarPopup = { title: "Cambiar foto de perfil", children: <EditAvatar /> };
-
-  function handleOpenPopup(popup) {
-    setPopup(popup);
-  }
-  
-  function handleClosePopup() {
-    setPopup(null);
-  }
-
+function Main({ onImagePopup }) {
   function handleCardClick(card) {
     const imagePopup = { 
       title: null, // no title for image popup
       children: <ImagePopup card={card} />
     };
-    handleOpenPopup(imagePopup);
-  }
-
-  return (
+    onImagePopup(imagePopup);
+  }  return (
     <main className="grid">
       <ul className="cards__list">
         {cards.map((card) => (
           <Card key={card._id} card={card} onCardClick={handleCardClick} />
         ))}
       </ul>
-
-      {popup && (
-        <Popup onClose={handleClosePopup} title={popup.title}>
-          {popup.children}
-        </Popup>
-      )}
     </main>
   )
 }
