@@ -16,7 +16,7 @@ export default function EditProfile() {
           placeholder="Name"
           required
           type="text"
-          defaultValue="Jacques Cousteau"
+          defaultValue="Renata Cousteau"
         />
         <span className="popup__error" id="profile-name-error"></span>
       </label>
@@ -30,7 +30,7 @@ export default function EditProfile() {
           placeholder="About me"
           required
           type="text"
-          defaultValue="Explorer"
+          defaultValue="Exploradora"
         />
         <span className="popup__error" id="profile-description-error"></span>
       </label>
