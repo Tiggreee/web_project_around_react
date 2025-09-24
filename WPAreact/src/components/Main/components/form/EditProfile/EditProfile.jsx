@@ -7,109 +7,61 @@ export default function EditProfile() {
   const [descriptionError, setDescriptionError] = useState("");
   const [isFormValid, setIsFormValid] = useState(true);
 
-  // Validar nombre
-  const validateName = (value) => {
-    if (!value.trim()) {
-      return "Please fill out this field.";
-    }
-    if (value.length < 2) {
-      return "Please lengthen this text to 2 characters or more (you are currently using " + value.length + " characters).";
-    }
-    if (value.length > 40) {
-      return "Please shorten this text to 40 characters or less (you are currently using " + value.length + " characters).";
-    }
+  const validate = (value, minLength, maxLength) => {
+    if (!value.trim()) return "Please fill out this field.";
+    if (value.length < minLength) return `Please lengthen this text to ${minLength} characters or more (you are currently using ${value.length} characters).`;
+    if (value.length > maxLength) return `Please shorten this text to ${maxLength} characters or less (you are currently using ${value.length} characters).`;
     return "";
   };
 
-  // Validar descripción
-  const validateDescription = (value) => {
-    if (!value.trim()) {
-      return "Please fill out this field.";
-    }
-    if (value.length < 2) {
-      return "Please lengthen this text to 2 characters or more (you are currently using " + value.length + " characters).";
-    }
-    if (value.length > 200) {
-      return "Please shorten this text to 200 characters or less (you are currently using " + value.length + " characters).";
-    }
-    return "";
-  };
-
-  // Manejar cambio de nombre
   const handleNameChange = (e) => {
     const value = e.target.value;
     setName(value);
-    setNameError(validateName(value));
+    setNameError(validate(value, 2, 40));
   };
 
-  // Manejar cambio de descripción
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
     setDescription(value);
-    setDescriptionError(validateDescription(value));
+    setDescriptionError(validate(value, 2, 200));
   };
 
-  // Actualizar validez del formulario
   useEffect(() => {
     setIsFormValid(!nameError && !descriptionError && name.trim() && description.trim());
   }, [nameError, descriptionError, name, description]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isFormValid) {
-      // Aquí se manejaría el envío del formulario
-      console.log("Form submitted:", { name, description });
-    }
+    isFormValid && console.log("Form submitted:", { name, description });
   };
 
   return (
-    <form
-      className="popup__form"
-      name="profile-form"
-      id="edit-profile-form"
-      noValidate
-      onSubmit={handleSubmit}
-    >
+    <form className="popup__form" onSubmit={handleSubmit} noValidate>
       <label className="popup__field">
         <input
-          className={`popup__input popup__input_type_name ${nameError ? 'popup__input_type_error' : ''}`}
-          id="profile-name"
-          maxLength="40"
-          minLength="2"
-          name="name"
-          placeholder="Name"
-          required
-          type="text"
+          className={`popup__input ${nameError ? 'popup__input_type_error' : ''}`}
           value={name}
           onChange={handleNameChange}
+          placeholder="Name"
+          maxLength="40"
+          minLength="2"
+          required
         />
-        <span className={`popup__error ${nameError ? 'popup__error_visible' : ''}`} id="profile-name-error">
-          {nameError}
-        </span>
+        <span className={`popup__error ${nameError ? 'popup__error_visible' : ''}`}>{nameError}</span>
       </label>
       <label className="popup__field">
         <input
-          className={`popup__input popup__input_type_description ${descriptionError ? 'popup__input_type_error' : ''}`}
-          id="profile-description"
-          maxLength="200"
-          minLength="2"
-          name="description"
-          placeholder="About me"
-          required
-          type="text"
+          className={`popup__input ${descriptionError ? 'popup__input_type_error' : ''}`}
           value={description}
           onChange={handleDescriptionChange}
+          placeholder="About me"
+          maxLength="200"
+          minLength="2"
+          required
         />
-        <span className={`popup__error ${descriptionError ? 'popup__error_visible' : ''}`} id="profile-description-error">
-          {descriptionError}
-        </span>
+        <span className={`popup__error ${descriptionError ? 'popup__error_visible' : ''}`}>{descriptionError}</span>
       </label>
-
-      <button 
-        className={`button popup__button ${!isFormValid ? 'popup__button_disabled' : ''}`}
-        type="submit"
-        disabled={!isFormValid}
-      >
+      <button className={`button popup__button ${!isFormValid ? 'popup__button_disabled' : ''}`} disabled={!isFormValid}>
         Guardar
       </button>
     </form>

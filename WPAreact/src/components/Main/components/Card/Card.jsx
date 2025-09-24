@@ -1,45 +1,19 @@
 import { useState } from 'react';
 import trashIcon from '../../../../images/trashbin.png';
 
-export default function Card(props) {
-  const { name, link, isLiked: initialIsLiked } = props.card;
-  const { onCardClick, onDelete } = props;
+export default function Card({ card, onCardClick, onDelete }) {
+  const { name, link, isLiked: initialIsLiked } = card;
   const [isLiked, setIsLiked] = useState(initialIsLiked);
-  
-  const handleLikeClick = () => {
-    setIsLiked(!isLiked);
-  };
-
-  const handleDeleteClick = () => {
-    if (onDelete) {
-      onDelete(props.card);
-    }
-  };
   
   return (
     <li className="grid__item">
-      <button 
-        type="button" 
-        className="grid__delete" 
-        aria-label="Eliminar"
-        onClick={handleDeleteClick}
-      >
+      <button className="grid__delete" onClick={() => onDelete?.(card)}>
         <img src={trashIcon} alt="Eliminar" className="grid__delete-icon" />
       </button>
-      <img 
-        className="grid__pic" 
-        src={link} 
-        alt={name}
-        onClick={() => onCardClick && onCardClick(props.card)}
-      />
+      <img className="grid__pic" src={link} alt={name} onClick={() => onCardClick?.(card)} />
       <div className="grid__item-row">
         <h2 className="grid__title">{name}</h2>
-        <button
-          className={`grid__like ${isLiked ? 'grid__like_active' : ''}`}
-          type="button"
-          aria-label="Me gusta"
-          onClick={handleLikeClick}
-        >
+        <button className={`grid__like ${isLiked ? 'grid__like_active' : ''}`} onClick={() => setIsLiked(!isLiked)}>
           <div className="grid__like-heart"></div>
         </button>
       </div>
