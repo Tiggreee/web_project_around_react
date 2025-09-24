@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import Card from './components/Card/Card'
 import ImagePopup from './components/ImagePopup/ImagePopup'
 
 // Mock data for cards as specified in the instructions
-const cards = [
+const initialCards = [
   {
     isLiked: false,
     _id: '5d1f0611d321eb4bdcd707dd',
@@ -54,17 +55,30 @@ const cards = [
 ];
 
 function Main({ onImagePopup }) {
+  const [cards, setCards] = useState(initialCards);
+
   function handleCardClick(card) {
     const imagePopup = { 
       title: null, // no title for image popup
       children: <ImagePopup card={card} />
     };
     onImagePopup(imagePopup);
-  }  return (
+  }
+
+  function handleDeleteCard(cardToDelete) {
+    setCards(cards => cards.filter(card => card._id !== cardToDelete._id));
+  }
+
+  return (
     <main className="grid">
       <ul className="cards__list">
         {cards.map((card) => (
-          <Card key={card._id} card={card} onCardClick={handleCardClick} />
+          <Card 
+            key={card._id} 
+            card={card} 
+            onCardClick={handleCardClick}
+            onDelete={handleDeleteCard}
+          />
         ))}
       </ul>
     </main>

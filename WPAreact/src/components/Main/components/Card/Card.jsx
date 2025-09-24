@@ -3,16 +3,27 @@ import trashIcon from '../../../../images/trashbin.png';
 
 export default function Card(props) {
   const { name, link, isLiked: initialIsLiked } = props.card;
-  const { onCardClick } = props;
+  const { onCardClick, onDelete } = props;
   const [isLiked, setIsLiked] = useState(initialIsLiked);
   
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
   };
+
+  const handleDeleteClick = () => {
+    if (onDelete) {
+      onDelete(props.card);
+    }
+  };
   
   return (
     <li className="grid__item">
-      <button type="button" className="grid__delete" aria-label="Eliminar">
+      <button 
+        type="button" 
+        className="grid__delete" 
+        aria-label="Eliminar"
+        onClick={handleDeleteClick}
+      >
         <img src={trashIcon} alt="Eliminar" className="grid__delete-icon" />
       </button>
       <img 
