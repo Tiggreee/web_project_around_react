@@ -364,6 +364,7 @@ body::before {
   width: 100%;
   max-width: 880px;
   box-sizing: border-box;
+  padding-top: 50px;
   padding-bottom: 48px;
 }
 
