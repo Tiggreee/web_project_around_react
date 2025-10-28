@@ -78,9 +78,9 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://around.nomoreparties.co/v1/web-es-cohort-16',
+  baseUrl: 'https://around-api.es.tripleten-services.com/v1',
   headers: {
-    authorization: 'cb1064e0-ddf2-4976-9ff5-04bff73a0d8a',
+    authorization: '39b89330-03b8-4184-a804-99ad6ef3fadf',
     'Content-Type': 'application/json',
   },
 });
