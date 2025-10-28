@@ -1,11 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { CurrentUserContext } from '../../../../../contexts/CurrentUserContext';
 
 export default function EditProfile() {
-  const [name, setName] = useState("Renata Cousteau");
-  const [description, setDescription] = useState("Exploradora");
+  const userContext = useContext(CurrentUserContext);
+  const { currentUser, handleUpdateUser } = userContext;
+  
+  const [name, setName] = useState(currentUser.name || "");
+  const [description, setDescription] = useState(currentUser.about || "");
   const [nameError, setNameError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const [isFormValid, setIsFormValid] = useState(true);
+
+  useEffect(() => {
+    setName(currentUser.name || "");
+    setDescription(currentUser.about || "");
+  }, [currentUser]);
 
   const validate = (value, minLength, maxLength) => {
     if (!value.trim()) return "Please fill out this field.";
@@ -32,7 +41,9 @@ export default function EditProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    isFormValid && console.log("Form submitted:", { name, description });
+    if (isFormValid) {
+      handleUpdateUser({ name, about: description });
+    }
   };
 
   return (
