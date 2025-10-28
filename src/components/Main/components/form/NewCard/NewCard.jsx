@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { CurrentUserContext } from '../../../../../contexts/CurrentUserContext';
 
 export default function NewCard() {
+  const { handleAddPlaceSubmit } = useContext(CurrentUserContext);
   const [title, setTitle] = useState("");
   const [imageLink, setImageLink] = useState("");
   const [titleError, setTitleError] = useState("");
@@ -38,8 +40,11 @@ export default function NewCard() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isFormValid) {
-      console.log("New card submitted:", { title, imageLink });
-      setTitle(""); setImageLink(""); setTitleError(""); setImageLinkError("");
+      handleAddPlaceSubmit({ name: title, link: imageLink });
+      setTitle("");
+      setImageLink("");
+      setTitleError("");
+      setImageLinkError("");
     }
   };
 

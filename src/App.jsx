@@ -12,14 +12,16 @@ import api from './utils/api'
 function App() {
   const [popup, setPopup] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    api.getUserInfo()
-      .then((userData) => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([userData, cardsData]) => {
         setCurrentUser(userData);
+        setCards(cardsData);
       })
       .catch((err) => {
-        console.error('Error al cargar los datos del usuario:', err);
+        console.error('Error al cargar los datos:', err);
       });
   }, []);
 
@@ -36,6 +38,33 @@ function App() {
     api.setUserAvatar(data)
       .then((newData) => {
         setCurrentUser(newData);
+        handleClosePopup();
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCardLike = async (card) => {
+    const isLiked = card.likes.some(user => user._id === currentUser._id);
+    
+    await api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCardDelete = async (card) => {
+    await api.deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((currentCard) => currentCard._id !== card._id));
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleAddPlaceSubmit = (cardData) => {
+    api.addCard(cardData)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
         handleClosePopup();
       })
       .catch((error) => console.error(error));
@@ -64,7 +93,7 @@ function App() {
   };
 
   return (
-    <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}>
+    <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser, handleUpdateAvatar, handleAddPlaceSubmit }}>
       <div className="page__content">
         <Header 
           onEditProfile={() => handleOpenPopup('editProfile')}
@@ -72,10 +101,10 @@ function App() {
           onEditAvatar={() => handleOpenPopup('editAvatar')}
         />
         <Main 
+          cards={cards}
           onImagePopup={setPopup}
-          onOpenPopup={handleOpenPopup}
-          onClosePopup={handleClosePopup}
-          popup={popup}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
         />
         <Footer />
         
