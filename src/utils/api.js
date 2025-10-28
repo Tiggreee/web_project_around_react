@@ -31,25 +31,15 @@ class Api {
     return this._request(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
-      body: JSON.stringify({
-        name,
-        about,
-      }),
+      body: JSON.stringify({ name, about }),
     });
-  }
-
-  setUserInfo(data) {
-    return this.updateUserInfo(data);
   }
 
   addCard({ name, link }) {
     return this._request(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: this._headers,
-      body: JSON.stringify({
-        name,
-        link,
-      }),
+      body: JSON.stringify({ name, link }),
     });
   }
 
@@ -82,14 +72,8 @@ class Api {
     return this._request(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
-      body: JSON.stringify({
-        avatar,
-      }),
+      body: JSON.stringify({ avatar }),
     });
-  }
-
-  setUserAvatar(data) {
-    return this.updateAvatar(data);
   }
 }
 

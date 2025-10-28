@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { CurrentUserContext } from '../../../../../contexts/CurrentUserContext';
+import { validateField } from '../../../../../utils/formValidation';
 
 export default function EditProfile() {
   const userContext = useContext(CurrentUserContext);
@@ -16,23 +17,16 @@ export default function EditProfile() {
     setDescription(currentUser.about || "");
   }, [currentUser]);
 
-  const validate = (value, minLength, maxLength) => {
-    if (!value.trim()) return "Por favor llena este campo.";
-    if (value.length < minLength) return `El texto debe tener al menos ${minLength} caracteres (actualmente tienes ${value.length}).`;
-    if (value.length > maxLength) return `El texto no debe exceder ${maxLength} caracteres (actualmente tienes ${value.length}).`;
-    return "";
-  };
-
   const handleNameChange = (e) => {
     const value = e.target.value;
     setName(value);
-    setNameError(validate(value, 2, 40));
+    setNameError(validateField(value, 2, 40));
   };
 
   const handleDescriptionChange = (e) => {
     const value = e.target.value;
     setDescription(value);
-    setDescriptionError(validate(value, 2, 200));
+    setDescriptionError(validateField(value, 2, 200));
   };
 
   useEffect(() => {

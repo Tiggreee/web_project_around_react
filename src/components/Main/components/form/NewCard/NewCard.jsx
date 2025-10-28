@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { CurrentUserContext } from '../../../../../contexts/CurrentUserContext';
+import { validateField, validateUrl } from '../../../../../utils/formValidation';
 
 export default function NewCard() {
   const { handleAddPlaceSubmit } = useContext(CurrentUserContext);
@@ -9,28 +10,16 @@ export default function NewCard() {
   const [imageLinkError, setImageLinkError] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
 
-  const validateTitle = (value) => {
-    if (!value.trim()) return "Por favor llena este campo.";
-    if (value.length < 2) return `El texto debe tener al menos 2 caracteres (actualmente tienes ${value.length}).`;
-    if (value.length > 30) return `El texto no debe exceder 30 caracteres (actualmente tienes ${value.length}).`;
-    return "";
-  };
-
-  const validateImageLink = (value) => {
-    if (!value.trim()) return "Por favor llena este campo.";
-    try { new URL(value); return ""; } catch { return "Por favor ingresa una URL válida."; }
-  };
-
   const handleTitleChange = (e) => {
     const value = e.target.value;
     setTitle(value);
-    setTitleError(validateTitle(value));
+    setTitleError(validateField(value, 2, 30));
   };
 
   const handleImageLinkChange = (e) => {
     const value = e.target.value;
     setImageLink(value);
-    setImageLinkError(validateImageLink(value));
+    setImageLinkError(validateUrl(value));
   };
 
   useEffect(() => {

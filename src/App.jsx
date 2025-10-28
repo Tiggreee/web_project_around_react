@@ -26,7 +26,7 @@ function App() {
   }, []);
 
   const handleUpdateUser = (data) => {
-    api.setUserInfo(data)
+    api.updateUserInfo(data)
       .then((newData) => {
         setCurrentUser(newData);
         handleClosePopup();
@@ -35,7 +35,7 @@ function App() {
   };
 
   const handleUpdateAvatar = (data) => {
-    api.setUserAvatar(data)
+    api.updateAvatar(data)
       .then((newData) => {
         setCurrentUser(newData);
         handleClosePopup();
