@@ -19,7 +19,7 @@ export default function EditAvatar() {
         <input 
           className="popup__input" 
           type="url" 
-          placeholder="Avatar link" 
+          placeholder="Enlace del avatar" 
           required 
           ref={avatarRef}
         />

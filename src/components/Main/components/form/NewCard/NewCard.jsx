@@ -10,15 +10,15 @@ export default function NewCard() {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const validateTitle = (value) => {
-    if (!value.trim()) return "Please fill out this field.";
-    if (value.length < 2) return `Please lengthen this text to 2 characters or more (you are currently using ${value.length} characters).`;
-    if (value.length > 30) return `Please shorten this text to 30 characters or less (you are currently using ${value.length} characters).`;
+    if (!value.trim()) return "Por favor llena este campo.";
+    if (value.length < 2) return `El texto debe tener al menos 2 caracteres (actualmente tienes ${value.length}).`;
+    if (value.length > 30) return `El texto no debe exceder 30 caracteres (actualmente tienes ${value.length}).`;
     return "";
   };
 
   const validateImageLink = (value) => {
-    if (!value.trim()) return "Please fill out this field.";
-    try { new URL(value); return ""; } catch { return "Please enter a valid URL."; }
+    if (!value.trim()) return "Por favor llena este campo.";
+    try { new URL(value); return ""; } catch { return "Por favor ingresa una URL válida."; }
   };
 
   const handleTitleChange = (e) => {
@@ -55,7 +55,7 @@ export default function NewCard() {
           className={`popup__input ${titleError ? 'popup__input_type_error' : ''}`}
           value={title}
           onChange={handleTitleChange}
-          placeholder="Title"
+          placeholder="Título"
           maxLength="30"
           minLength="2"
           required
@@ -67,7 +67,7 @@ export default function NewCard() {
           className={`popup__input ${imageLinkError ? 'popup__input_type_error' : ''}`}
           type="url"
           value={imageLink}
-          placeholder="Image link"
+          placeholder="Enlace de imagen"
           onChange={handleImageLinkChange}
           required
         />

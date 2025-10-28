@@ -17,9 +17,9 @@ export default function EditProfile() {
   }, [currentUser]);
 
   const validate = (value, minLength, maxLength) => {
-    if (!value.trim()) return "Please fill out this field.";
-    if (value.length < minLength) return `Please lengthen this text to ${minLength} characters or more (you are currently using ${value.length} characters).`;
-    if (value.length > maxLength) return `Please shorten this text to ${maxLength} characters or less (you are currently using ${value.length} characters).`;
+    if (!value.trim()) return "Por favor llena este campo.";
+    if (value.length < minLength) return `El texto debe tener al menos ${minLength} caracteres (actualmente tienes ${value.length}).`;
+    if (value.length > maxLength) return `El texto no debe exceder ${maxLength} caracteres (actualmente tienes ${value.length}).`;
     return "";
   };
 
@@ -53,7 +53,7 @@ export default function EditProfile() {
           className={`popup__input ${nameError ? 'popup__input_type_error' : ''}`}
           value={name}
           onChange={handleNameChange}
-          placeholder="Name"
+          placeholder="Nombre"
           maxLength="40"
           minLength="2"
           required
@@ -65,7 +65,7 @@ export default function EditProfile() {
           className={`popup__input ${descriptionError ? 'popup__input_type_error' : ''}`}
           value={description}
           onChange={handleDescriptionChange}
-          placeholder="About me"
+          placeholder="Acerca de mí"
           maxLength="200"
           minLength="2"
           required

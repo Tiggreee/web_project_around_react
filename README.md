@@ -74,3 +74,27 @@ src/
 - Context API
 - Fetch API
 - BEM Methodology
+
+## Bilingual Strategy / Estrategia Bilingüe
+
+This project follows a **bilingual development approach** to reflect real-world workflow:
+
+**English (Internal/Development):**
+- Code (variables, functions, methods)
+- Git commits & branch names
+- Technical documentation
+- Console logs & error handling
+- Comments (when needed)
+
+**Spanish (User-Facing/UI):**
+- User interface text & placeholders
+- Form labels & validation messages
+- Button text & popup titles
+- Alt text & accessibility labels
+- User error messages
+
+**Transition Plan:** Gradually migrating all UI text to English for international scalability while maintaining Spanish as a base for local users.
+
+---
+
+*Este proyecto sigue un enfoque de desarrollo bilingüe para reflejar flujos de trabajo reales, con código e infraestructura en inglés y experiencia de usuario en español.*
