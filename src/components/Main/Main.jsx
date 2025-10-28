@@ -19,6 +19,7 @@ function Main({ cards, onImagePopup, onCardLike, onCardDelete }) {
           />
         ))}
       </ul>
+      {false && <Popup />}
     </main>
   );
 }
