@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
 import Main from './components/Main/Main'
 import Footer from './components/Footer/Footer'
@@ -6,9 +6,69 @@ import Popup from './components/Main/components/Popup/Popup'
 import NewCard from './components/Main/components/form/NewCard/NewCard'
 import EditProfile from './components/Main/components/form/EditProfile/EditProfile'
 import EditAvatar from './components/Main/components/form/EditAvatar/EditAvatar'
+import { CurrentUserContext } from './contexts/CurrentUserContext'
+import api from './utils/api'
 
 function App() {
   const [popup, setPopup] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([userData, cardsData]) => {
+        setCurrentUser(userData);
+        setCards(cardsData);
+      })
+      .catch((err) => {
+        console.error('Error al cargar los datos:', err);
+      });
+  }, []);
+
+  const handleUpdateUser = (data) => {
+    api.setUserInfo(data)
+      .then((newData) => {
+        setCurrentUser(newData);
+        handleClosePopup();
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleUpdateAvatar = (data) => {
+    api.setUserAvatar(data)
+      .then((newData) => {
+        setCurrentUser(newData);
+        handleClosePopup();
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCardLike = async (card) => {
+    const isLiked = card.likes.some(user => user._id === currentUser._id);
+    
+    await api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCardDelete = async (card) => {
+    await api.deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((currentCard) => currentCard._id !== card._id));
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleAddPlaceSubmit = (cardData) => {
+    api.addCard(cardData)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        handleClosePopup();
+      })
+      .catch((error) => console.error(error));
+  };
 
   const handleOpenPopup = (popupType) => {
     let popupData;
@@ -33,23 +93,28 @@ function App() {
   };
 
   return (
-    <div className="page__content">
-      <Header 
-        onEditProfile={() => handleOpenPopup('editProfile')}
-        onAddPlace={() => handleOpenPopup('newCard')}
-        onEditAvatar={() => handleOpenPopup('editAvatar')}
-      />
-      <Main 
-        onImagePopup={setPopup}
-      />
-      <Footer />
-      
-      {popup && (
-        <Popup onClose={handleClosePopup} title={popup.title}>
-          {popup.children}
-        </Popup>
-      )}
-    </div>
+    <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser, handleUpdateAvatar, handleAddPlaceSubmit }}>
+      <div className="page__content">
+        <Header 
+          onEditProfile={() => handleOpenPopup('editProfile')}
+          onAddPlace={() => handleOpenPopup('newCard')}
+          onEditAvatar={() => handleOpenPopup('editAvatar')}
+        />
+        <Main 
+          cards={cards}
+          onImagePopup={setPopup}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+        />
+        <Footer />
+        
+        {popup && (
+          <Popup onClose={handleClosePopup} title={popup.title}>
+            {popup.children}
+          </Popup>
+        )}
+      </div>
+    </CurrentUserContext.Provider>
   )
 }
 
