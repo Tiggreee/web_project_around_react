@@ -1,27 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Card from './components/Card/Card'
 import ImagePopup from './components/ImagePopup/ImagePopup'
-
-const initialCards = [
-  { isLiked: false, _id: '1', name: 'Yosemite Valley', link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg' },
-  { isLiked: true, _id: '2', name: 'Lake Louise', link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg' },
-  { isLiked: false, _id: '3', name: 'Bald Mountains', link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg' },
-  { isLiked: false, _id: '4', name: 'Latemar', link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg' },
-  { isLiked: true, _id: '5', name: 'Vanoise National Park', link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg' },
-  { isLiked: false, _id: '6', name: 'Lago di Braies', link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg' }
-];
+import api from '../../utils/api'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
 function Main({ onImagePopup }) {
-  const [cards, setCards] = useState(initialCards);
+  const [cards, setCards] = useState([]);
+  const { currentUser } = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    api.getInitialCards()
+      .then((data) => {
+        setCards(data);
+      })
+      .catch((err) => {
+        console.error('Error al cargar las tarjetas:', err);
+      });
+  }, []);
+
+  async function handleCardLike(card) {
+    const isLiked = card.likes.some(user => user._id === currentUser._id);
+    
+    await api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
+      })
+      .catch((error) => console.error(error));
+  }
+
+  async function handleCardDelete(card) {
+    await api.deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((currentCard) => currentCard._id !== card._id));
+      })
+      .catch((error) => console.error(error));
+  }
 
   const handleCardClick = (card) => onImagePopup({ title: null, children: <ImagePopup card={card} /> });
-  const handleDeleteCard = (cardToDelete) => setCards(cards => cards.filter(card => card._id !== cardToDelete._id));
 
   return (
     <main className="grid">
       <ul className="cards__list">
         {cards.map((card) => (
-          <Card key={card._id} card={card} onCardClick={handleCardClick} onDelete={handleDeleteCard} />
+          <Card 
+            key={card._id} 
+            card={card} 
+            onCardClick={handleCardClick} 
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+          />
         ))}
       </ul>
     </main>
