@@ -1,6 +1,6 @@
 # Around The U.S. - React
 
-Aplicación social para compartir fotos de lugares, migrada a React con Vite. Los usuarios pueden ver tarjetas de fotos, editar su perfil y gestionar una colección de imágenes de lugares.
+Aplicación social para compartir fotos de lugares, migrada a React con Vite. Los usuarios pueden ver tarjetas de fotos, dar likes, editar su perfil, cambiar avatar y gestionar una colección completa de imágenes conectada a una API real.
 
 ## Desarrollo
 
@@ -10,39 +10,67 @@ npm run build    # Build de producción
 npm run preview  # Vista previa del build
 ```
 
-##  Estructura
+## Estructura
 
 ```
 src/
 ├── components/
-│   ├── Header/          # Logo y perfil
-│   ├── Main/            # Contenido principal
+│   ├── Header/          # Logo y perfil de usuario
+│   ├── Main/            # Contenido principal con tarjetas
 │   │   └── components/  # Card, Popup, formularios
 │   └── Footer/          # Copyright
+├── contexts/            # CurrentUserContext para estado global
+├── utils/               # API class con métodos de backend
 ├── images/              # Recursos locales
 └── index.css           # Estilos BEM
 ```
 
 ## Características
 
-- **Popups dinámicos**: Sistema centralizado con validación
-- **Validación en tiempo real**: Mensajes de error nativos
+- **API Integration**: Conexión completa con backend para datos reales
+- **Context API**: Gestión de estado global del usuario
+- **Popups dinámicos**: Sistema centralizado con validación en tiempo real
+- **Validación de formularios**: Mensajes de error nativos
 - **Responsive**: Mobile-first (767px, 1279px breakpoints)  
-- **Gestión de estado**: React hooks para formularios y UI
-- **Interactividad**: Like, delete, editar perfil, nuevas cards
+- **React Hooks**: useState, useEffect, useContext, useRef
+- **Interactividad completa**: Like/unlike, delete, editar perfil, cambiar avatar, añadir cards
 
 ## Componentes Clave
 
-- `App.jsx`: Gestión de popups centralizada
-- `Main.jsx`: Renderizado de cards y handlers  
+- `App.jsx`: Gestión centralizada de estado (cards, user, popups)
+- `Main.jsx`: Renderizado de cards con props desde App  
 - `Popup.jsx`: Container reutilizable con cierre ESC/overlay
-- `Card.jsx`: Componente individual con like/delete
-- Formularios: `EditProfile`, `NewCard`, `EditAvatar`
+- `Card.jsx`: Componente individual con like/delete (solo owner)
+- `CurrentUserContext.js`: Contexto global para usuario y funciones
+- Formularios: `EditProfile` (controlled), `EditAvatar` (refs), `NewCard`
 
-##  Funcionalidades
+## Funcionalidades
 
-- Validación campos obligatorios (2-40 chars nombres, 2-200 descripciones)
-- URLs válidas para imágenes
+### API y Backend
+- Carga de tarjetas desde servidor al montar componente
+- Carga de datos de usuario desde API
+- Like/unlike con actualización en tiempo real
+- Eliminación de tarjetas (solo el dueño)
+- Edición de perfil (nombre y descripción)
+- Cambio de avatar con validación de URL
+- Añadir nuevas tarjetas que aparecen al inicio
+
+### Validación
+- Campos obligatorios (2-40 chars nombres, 2-200 descripciones)
+- URLs válidas para imágenes y avatar
 - Botones inactivos con estados de error
+- Feedback visual en tiempo real
+
+### UX/UI
 - Cierre de popups con ESC o clic en overlay  
+- Auto-cierre tras guardar cambios exitosos
 - Efectos hover en botones y elementos interactivos
+- Actualización automática de UI tras cambios (paradigma declarativo)
+
+## Tecnologías
+
+- React 19
+- Vite
+- Context API
+- Fetch API
+- BEM Methodology
