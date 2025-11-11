@@ -1,29 +1,57 @@
 import { useState, useEffect } from 'react'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import Header from './Header/Header'
 import Main from './Main/Main'
 import Footer from './Footer/Footer'
+import Login from './Login/Login'
+import Register from './Register/Register'
+import ProtectedRoute from './ProtectedRoute/ProtectedRoute'
+import InfoTooltip from './InfoTooltip/InfoTooltip'
 import Popup from './Main/components/Popup/Popup'
 import NewCard from './Main/components/form/NewCard/NewCard'
 import EditProfile from './Main/components/form/EditProfile/EditProfile'
 import EditAvatar from './Main/components/form/EditAvatar/EditAvatar'
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 import api from '../utils/api'
+import * as auth from '../utils/auth'
 
 function App() {
   const [popup, setPopup] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [tooltipInfo, setTooltipInfo] = useState({ isOpen: false, isSuccess: false, message: '' });
+  const navigate = useNavigate();
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userData, cardsData]) => {
-        setCurrentUser(userData);
-        setCards(cardsData);
-      })
-      .catch((err) => {
-        console.error('Error al cargar los datos:', err);
-      });
-  }, []);
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      auth.checkToken(token)
+        .then((res) => {
+          setLoggedIn(true);
+          setUserEmail(res.data.email);
+          navigate('/');
+        })
+        .catch(() => {
+          localStorage.removeItem('jwt');
+        });
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      const token = localStorage.getItem('jwt');
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([userData, cardsData]) => {
+          setCurrentUser(userData);
+          setCards(cardsData);
+        })
+        .catch((err) => {
+          console.error('Error al cargar los datos:', err);
+        });
+    }
+  }, [loggedIn]);
 
   const handleUpdateUser = (data) => {
     api.updateUserInfo(data)
@@ -92,20 +120,69 @@ function App() {
     setPopup(null);
   };
 
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    setCurrentUser({});
+    setCards([]);
+    setUserEmail('');
+    navigate('/signin');
+  };
+
+  const handleRegister = (isSuccess) => {
+    setTooltipInfo({
+      isOpen: true,
+      isSuccess,
+      message: isSuccess 
+        ? '¡Correcto! Ya estás registrado.' 
+        : 'Uy, algo salió mal. Por favor, inténtalo de nuevo.'
+    });
+  };
+
+  const closeTooltip = () => {
+    setTooltipInfo({ isOpen: false, isSuccess: false, message: '' });
+  };
+
   return (
     <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser, handleUpdateAvatar, handleAddPlaceSubmit }}>
       <div className="page__content">
         <Header 
+          loggedIn={loggedIn}
+          userEmail={userEmail}
+          onLogout={handleLogout}
           onEditProfile={() => handleOpenPopup('editProfile')}
           onAddPlace={() => handleOpenPopup('newCard')}
           onEditAvatar={() => handleOpenPopup('editAvatar')}
         />
-        <Main 
-          cards={cards}
-          onImagePopup={setPopup}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        />
+        
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <ProtectedRoute loggedIn={loggedIn}>
+                <Main 
+                  cards={cards}
+                  onImagePopup={setPopup}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/signin" 
+            element={loggedIn ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />} 
+          />
+          <Route 
+            path="/signup" 
+            element={loggedIn ? <Navigate to="/" replace /> : <Register onRegister={handleRegister} />} 
+          />
+        </Routes>
+
         <Footer />
         
         {popup && (
@@ -113,6 +190,13 @@ function App() {
             {popup.children}
           </Popup>
         )}
+
+        <InfoTooltip 
+          isOpen={tooltipInfo.isOpen}
+          isSuccess={tooltipInfo.isSuccess}
+          message={tooltipInfo.message}
+          onClose={closeTooltip}
+        />
       </div>
     </CurrentUserContext.Provider>
   )
