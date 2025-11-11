@@ -1,6 +1,6 @@
 # Around The U.S. - React
 
-Aplicación social para compartir fotos de lugares, migrada a React con Vite. Los usuarios pueden ver tarjetas de fotos, dar likes, editar su perfil, cambiar avatar y gestionar una colección completa de imágenes conectada a una API real.
+Aplicación social para compartir fotos de lugares, migrada a React con Vite y sistema de autenticación completo. Los usuarios pueden registrarse, iniciar sesión, ver tarjetas de fotos, dar likes, editar su perfil, cambiar avatar y gestionar una colección completa de imágenes conectada a una API real.
 
 ## Desarrollo
 
@@ -15,20 +15,27 @@ npm run preview  # Vista previa del build
 ```
 src/
 ├── components/
-│   ├── Header/          # Logo y perfil de usuario
+│   ├── Header/          # Logo y perfil de usuario con auth
 │   ├── Main/            # Contenido principal con tarjetas
 │   │   └── components/  # Card, Popup, formularios
+│   ├── Login/           # Formulario de inicio de sesión
+│   ├── Register/        # Formulario de registro
+│   ├── ProtectedRoute/  # Rutas protegidas para auth
+│   ├── InfoTooltip/     # Tooltip de confirmación
 │   └── Footer/          # Copyright
 ├── contexts/            # CurrentUserContext para estado global
-├── utils/               # API class con métodos de backend
+├── utils/               # API class + auth utilities
 ├── images/              # Recursos locales
-└── index.css           # Estilos BEM
+└── index.css           # Estilos BEM + auth components
 ```
 
 ## Características
 
-- **API Integration**: Conexión completa con backend para datos reales
+- **Sistema de Autenticación**: Registro, login, logout con JWT tokens
+- **Rutas Protegidas**: Acceso controlado a la aplicación principal
+- **API Integration**: Conexión completa con backend para datos y auth
 - **Context API**: Gestión de estado global del usuario
+- **React Router**: Navegación SPA con rutas dinámicas
 - **Popups dinámicos**: Sistema centralizado con validación en tiempo real
 - **Validación de formularios**: Mensajes de error nativos
 - **Responsive**: Mobile-first (767px, 1279px breakpoints)  
@@ -37,12 +44,20 @@ src/
 
 ## Componentes Clave
 
-- `App.jsx`: Gestión centralizada de estado (cards, user, popups)
-- `Main.jsx`: Renderizado de cards con props desde App  
-- `Popup.jsx`: Container reutilizable con cierre ESC/overlay
-- `Card.jsx`: Componente individual con like/delete (solo owner)
-- `CurrentUserContext.js`: Contexto global para usuario y funciones
-- Formularios: `EditProfile` (controlled), `EditAvatar` (refs), `NewCard`
+### Auth System (El corazón del asunto)
+- `Login.jsx`: Donde la magia del acceso sucede ✨
+- `Register.jsx`: Tu puerta de entrada al mundo Around  
+- `ProtectedRoute.jsx`: El bouncer que cuida la fiesta 🚪
+- `InfoTooltip.jsx`: Te dice si la hiciste o la regaste
+- `auth.js`: Las llaves del reino (tokens y esas cosas)
+
+### App Principal (Donde vive la diversión)
+- `App.jsx`: El cerebro que controla todo este desmadre
+- `Main.jsx`: Donde tus fotos cobran vida  
+- `Header.jsx`: Tu home base con perfil y todo
+- `Card.jsx`: Cada foto con su personalidad (like/delete)
+- `CurrentUserContext.js`: El ADN de tu usuario por toda la app
+- Formularios varios: Porque editar perfil también cuenta
 
 ## Funcionalidades
 
