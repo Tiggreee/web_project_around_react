@@ -1,115 +1,122 @@
 # Around The U.S. - React
 
-Aplicación social para compartir fotos de lugares, migrada a React con Vite y sistema de autenticación completo. Los usuarios pueden registrarse, iniciar sesión, ver tarjetas de fotos, dar likes, editar su perfil, cambiar avatar y gestionar una colección completa de imágenes conectada a una API real.
+Social photo sharing application built with React and Vite, featuring complete authentication system. Users can register, sign in, view photo cards, like posts, edit their profile, change avatar, and manage a complete image collection connected to a real API.
 
-## Desarrollo
+## Development
 
 ```bash
-npm run dev      # Servidor de desarrollo (puerto 3000)
-npm run build    # Build de producción  
-npm run preview  # Vista previa del build
+npm run dev      # Development server (port 3000)
+npm run build    # Production build  
+npm run preview  # Build preview
 ```
 
-## Estructura
+## Structure
 
 ```
 src/
 ├── components/
-│   ├── Header/          # Logo y perfil de usuario con auth
-│   ├── Main/            # Contenido principal con tarjetas
-│   │   └── components/  # Card, Popup, formularios
-│   ├── Login/           # Formulario de inicio de sesión
-│   ├── Register/        # Formulario de registro
-│   ├── ProtectedRoute/  # Rutas protegidas para auth
-│   ├── InfoTooltip/     # Tooltip de confirmación
-│   └── Footer/          # Copyright
-├── contexts/            # CurrentUserContext para estado global
+│   ├── Header/          # Logo and user profile with auth
+│   ├── Main/            # Main content with photo cards
+│   │   └── components/  # Card, Popup, forms
+│   ├── Login/           # Sign in form component
+│   ├── Register/        # User registration form
+│   ├── ProtectedRoute/  # Protected routes for auth
+│   ├── InfoTooltip/     # Confirmation tooltip
+│   └── Footer/          # Copyright footer
+├── contexts/            # CurrentUserContext for global state
 ├── utils/               # API class + auth utilities
-├── images/              # Recursos locales
-└── index.css           # Estilos BEM + auth components
+├── images/              # Local assets
+└── index.css           # BEM styles + auth components
 ```
 
-## Características
+## Features
 
-- **Sistema de Autenticación**: Registro, login, logout con JWT tokens
-- **Rutas Protegidas**: Acceso controlado a la aplicación principal
-- **API Integration**: Conexión completa con backend para datos y auth
-- **Context API**: Gestión de estado global del usuario
-- **React Router**: Navegación SPA con rutas dinámicas
-- **Popups dinámicos**: Sistema centralizado con validación en tiempo real
-- **Validación de formularios**: Mensajes de error nativos
-- **Responsive**: Mobile-first (767px, 1279px breakpoints)  
+- **Authentication System**: Register, login, logout with JWT tokens
+- **Protected Routes**: Controlled access to main application
+- **API Integration**: Complete backend connection for data and auth
+- **Context API**: Global user state management
+- **React Router**: SPA navigation with dynamic routes
+- **Dynamic Popups**: Centralized system with real-time validation
+- **Form Validation**: Native error messages
+- **Responsive Design**: Mobile-first (767px, 1279px breakpoints)  
 - **React Hooks**: useState, useEffect, useContext, useRef
-- **Interactividad completa**: Like/unlike, delete, editar perfil, cambiar avatar, añadir cards
+- **Full Interactivity**: Like/unlike, delete, edit profile, change avatar, add cards
 
-## Componentes Clave
+## Key Components
 
-### Auth System (El corazón del asunto)
-- `Login.jsx`: Donde la magia del acceso sucede ✨
-- `Register.jsx`: Tu puerta de entrada al mundo Around  
-- `ProtectedRoute.jsx`: El bouncer que cuida la fiesta 🚪
-- `InfoTooltip.jsx`: Te dice si la hiciste o la regaste
-- `auth.js`: Las llaves del reino (tokens y esas cosas)
+### Authentication System
+- `Login.jsx`: Sign in form with validation
+- `Register.jsx`: User registration form  
+- `ProtectedRoute.jsx`: HOC for routes requiring authentication
+- `InfoTooltip.jsx`: Visual feedback for registration success/failure
+- `auth.js`: Authentication API utilities (register, authorize, checkToken)
 
-### App Principal (Donde vive la diversión)
-- `App.jsx`: El cerebro que controla todo este desmadre
-- `Main.jsx`: Donde tus fotos cobran vida  
-- `Header.jsx`: Tu home base con perfil y todo
-- `Card.jsx`: Cada foto con su personalidad (like/delete)
-- `CurrentUserContext.js`: El ADN de tu usuario por toda la app
-- Formularios varios: Porque editar perfil también cuenta
+### Main Application
+- `App.jsx`: Main router and authentication state management
+- `Main.jsx`: Photo cards rendering with props from App  
+- `Header.jsx`: Logo, navigation and user state (login/logout)
+- `Card.jsx`: Individual photo component with like/delete (owner only)
+- `CurrentUserContext.js`: Global context for user and functions
+- Forms: `EditProfile` (controlled), `EditAvatar` (refs), `NewCard`
 
-## Funcionalidades
+## Functionality
 
-### API y Backend
-- Carga de tarjetas desde servidor al montar componente
-- Carga de datos de usuario desde API
-- Like/unlike con actualización en tiempo real
-- Eliminación de tarjetas (solo el dueño)
-- Edición de perfil (nombre y descripción)
-- Cambio de avatar con validación de URL
-- Añadir nuevas tarjetas que aparecen al inicio
+### API and Backend
+- Load cards from server on component mount
+- Load user data from API
+- Like/unlike with real-time updates
+- Delete cards (owner only)
+- Profile editing (name and description)
+- Avatar change with URL validation
+- Add new cards that appear at the beginning
 
-### Validación
-- Campos obligatorios (2-40 chars nombres, 2-200 descripciones)
-- URLs válidas para imágenes y avatar
-- Botones inactivos con estados de error
-- Feedback visual en tiempo real
+### Validation
+- Required fields (2-40 chars names, 2-200 descriptions)
+- Valid URLs for images and avatar
+- Inactive buttons with error states
+- Real-time visual feedback
 
 ### UX/UI
-- Cierre de popups con ESC o clic en overlay  
-- Auto-cierre tras guardar cambios exitosos
-- Efectos hover en botones y elementos interactivos
-- Actualización automática de UI tras cambios (paradigma declarativo)
+- Close popups with ESC or overlay click  
+- Auto-close after successful changes
+- Hover effects on buttons and interactive elements
+- Automatic UI updates after changes (declarative paradigm)
 
-## Tecnologías
+## Technologies
 
 - React 19
 - Vite
 - Context API
+- React Router DOM
 - Fetch API
 - BEM Methodology
 
-## Bilingual Strategy / Estrategia Bilingüe
+## Getting Started
 
-This project follows a **bilingual development approach** to reflect real-world workflow:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Tiggreee/web_project_around_react.git
+   cd web_project_around_react
+   ```
 
-**English (Internal/Development):**
-- Code (variables, functions, methods)
-- Git commits & branch names
-- Technical documentation
-- Console logs & error handling
-- Comments (when needed)
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-**Spanish (User-Facing/UI):**
-- User interface text & placeholders
-- Form labels & validation messages
-- Button text & popup titles
-- Alt text & accessibility labels
-- User error messages
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
 
-**Transition Plan:** Gradually migrating all UI text to English for international scalability while maintaining Spanish as a base for local users.
+4. **Open your browser**
+   Navigate to `http://localhost:3000`
 
----
+## Deployment
 
-*Este proyecto sigue un enfoque de desarrollo bilingüe para reflejar flujos de trabajo reales, con código e infraestructura en inglés y experiencia de usuario en español.*
+This project is configured for deployment on GitHub Pages using Vite's build system.
+
+```bash
+npm run build    # Creates dist/ folder
+npm run preview  # Preview production build locally
+```
