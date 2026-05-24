@@ -1,4 +1,4 @@
-# Around The U.S. - React
+# Englishcourse-DataNErd
 
 Aplicación social para compartir fotos de lugares, migrada a React con Vite. Los usuarios pueden ver tarjetas de fotos, dar likes, editar su perfil, cambiar avatar y gestionar una colección completa de imágenes conectada a una API real.
 
