@@ -1,6 +1,5 @@
 import Card from './components/Card/Card'
 import ImagePopup from './components/ImagePopup/ImagePopup'
-import Popup from './components/Popup/Popup'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
 function Main({ cards, onImagePopup, onCardLike, onCardDelete }) {
@@ -19,7 +18,6 @@ function Main({ cards, onImagePopup, onCardLike, onCardDelete }) {
           />
         ))}
       </ul>
-      {false && <Popup />}
     </main>
   );
 }
